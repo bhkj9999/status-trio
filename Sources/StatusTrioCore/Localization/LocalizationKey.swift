@@ -47,7 +47,6 @@ enum LocalizationKey: String, CaseIterable, Hashable, Sendable {
     case guideNetworkCenter = "guide.network.center"
 
     case menuVersion = "menu.version"
-    case menuCheckForUpdates = "menu.checkForUpdates"
     case menuSettings = "menu.settings"
     case menuQuit = "menu.quit"
     case menuMore = "menu.more"
@@ -360,9 +359,6 @@ enum LocalizationKey: String, CaseIterable, Hashable, Sendable {
     case settingsAboutProject = "settings.about.project"
     case settingsAboutRepository = "settings.about.repository"
     case settingsAboutCopyright = "settings.about.copyright"
-    case settingsUpdatesTitle = "settings.updates.title"
-    case settingsUpdatesAutomatic = "settings.updates.automatic"
-    case settingsUpdatesCheck = "settings.updates.check"
 
     case batteryTitle = "battery.title"
     case batteryTitlePower = "battery.title.power"

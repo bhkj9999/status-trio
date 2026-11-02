@@ -10,7 +10,6 @@ private let singleInstanceLogger = Logger(
 public final class AppDelegate: NSObject, NSApplicationDelegate {
     private var environment: AppEnvironment?
     private var singleInstanceGuard: SingleInstanceGuard?
-    private let updaterManager = UpdaterManager.shared
 
     public override init() {
         super.init()
@@ -40,7 +39,6 @@ public final class AppDelegate: NSObject, NSApplicationDelegate {
         let environment = AppEnvironment.live(backgroundUITesting: backgroundUITesting)
         self.environment = environment
         environment.start()
-        updaterManager.start(activationPolicy: environment.activationPolicy)
     }
 
     /// Keeps "another copy is running" and "the lock is unusable" apart in the

@@ -7,7 +7,6 @@
 "menu.showAll" = "显示全部";
 "menu.window" = "窗口";
 "menu.closeWindow" = "关闭窗口";
-"menu.checkForUpdates" = "检查更新…";
 "menu.openMenuBarSettings" = "打开系统菜单栏";
 "settings.title" = "设置";
 "settings.page.appearance" = "外观";
@@ -198,9 +197,6 @@
 "settings.battery.fullThresholdDescription" = "电量达到该值时圆环即视为满格。适合充电上限设置在 100% 以下的场景。";
 "settings.battery.fullThresholdUseChargeLimit" = "使用充电上限";
 "settings.battery.fullThresholdSystemUnavailable" = "这台 Mac 未上报充电上限，无法读取该值。";
-"settings.updates.title" = "更新";
-"settings.updates.automatic" = "自动检查更新";
-"settings.updates.check" = "检查更新…";
 "battery.title" = "电池 · %d%%";
 "battery.title.power" = "功耗 · %d W";
 "battery.title.powerUnavailable" = "功耗 · 暂不可用";

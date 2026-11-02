@@ -6,15 +6,18 @@ source "$ROOT/scripts/build-timing.sh"
 trap 'build_timing_finish "$?"' EXIT
 CONFIGURATION="${1:-release}"
 OPEN_APP="${2:-open}"
-BUNDLE_ID="${BUNDLE_ID:-com.lingsmbp.StatusTrio}"
+BUNDLE_ID="${BUNDLE_ID:-local.henryz.StatusTrio}"
 APP_NAME="${APP_NAME:-Status Trio}"
 APP_VERSION="${APP_VERSION:-}"
 BUILD_NUMBER="${BUILD_NUMBER:-}"
-SU_FEED_URL="${SU_FEED_URL:-}"
 DEVELOPMENT_CODENAME="${DEVELOPMENT_CODENAME:-}"
 UNIVERSAL_BUILD="${UNIVERSAL_BUILD:-0}"
-TELEMETRY_PRODUCTION="${TELEMETRY_PRODUCTION:-0}"
-PRIVILEGED_HELPER="${PRIVILEGED_HELPER:-1}"
+# The upstream helper only accepts clients signed with the upstream Developer
+# ID team, so this fork leaves it out until it has its own signing requirement.
+PRIVILEGED_HELPER="${PRIVILEGED_HELPER:-0}"
+# 1 adds a secure timestamp from Apple's server when signing. Off by default so
+# a local build never needs the network.
+CODE_SIGN_TIMESTAMP="${CODE_SIGN_TIMESTAMP:-0}"
 
 case "$OPEN_APP" in
     open|no-open) ;;
@@ -43,19 +46,6 @@ if [[ -n "$BUILD_NUMBER" && ! "$BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
     echo "Error: BUILD_NUMBER must contain only digits." >&2
     exit 2
 fi
-
-if [[ -n "$SU_FEED_URL" && "$SU_FEED_URL" != https://* ]]; then
-    echo "Error: SU_FEED_URL must use HTTPS." >&2
-    exit 2
-fi
-
-case "$TELEMETRY_PRODUCTION" in
-    0|1) ;;
-    *)
-        echo "Error: TELEMETRY_PRODUCTION must be 0 or 1." >&2
-        exit 2
-        ;;
-esac
 
 case "$UNIVERSAL_BUILD" in
     0|1) ;;
@@ -116,14 +106,6 @@ fi
 
 cp "$BIN_PATH/StatusTrio" "$CONTENTS/MacOS/StatusTrio"
 cp -R "$CORE_RESOURCE_BUNDLE" "$CONTENTS/Resources/"
-
-SPARKLE_FRAMEWORK_SOURCE="$(find "$ROOT/.build/artifacts" -path '*/Sparkle.xcframework/macos-*/Sparkle.framework' -type d -print -quit)"
-if [[ -z "$SPARKLE_FRAMEWORK_SOURCE" ]]; then
-    echo "Error: missing Sparkle.framework under .build/artifacts." >&2
-    exit 1
-fi
-
-ditto "$SPARKLE_FRAMEWORK_SOURCE" "$CONTENTS/Frameworks/Sparkle.framework"
 
 # The mobile-device helper is built from exact upstream commits. Its runtime
 # dependency graph is packaged into the app so users do not need Homebrew.
@@ -194,9 +176,6 @@ if [[ "$PRIVILEGED_HELPER" == "1" ]]; then
 fi
 
 cp "$ROOT/Support/Info.plist" "$CONTENTS/Info.plist"
-if [[ "$TELEMETRY_PRODUCTION" == "1" ]]; then
-    /usr/libexec/PlistBuddy -c "Set :STTelemetryProduction true" "$CONTENTS/Info.plist"
-fi
 if [[ "$PRIVILEGED_HELPER" == "1" ]]; then
     /usr/libexec/PlistBuddy -c "Set :STIncludesPrivilegedHelper true" "$CONTENTS/Info.plist"
 else
@@ -226,9 +205,6 @@ if [[ -n "$DEVELOPMENT_CODENAME" ]]; then
     /usr/libexec/PlistBuddy -c "Add :STDevelopmentCodename string $DEVELOPMENT_CODENAME" "$CONTENTS/Info.plist"
 fi
 
-if [[ -n "$SU_FEED_URL" ]]; then
-    /usr/libexec/PlistBuddy -c "Set :SUFeedURL $SU_FEED_URL" "$CONTENTS/Info.plist"
-fi
 INFO_PLIST_COUNT="$(find "$ROOT/Sources/StatusTrioCore/Resources" -name 'InfoPlist.strings' -type f | wc -l | tr -d ' ')"
 if [[ "$INFO_PLIST_COUNT" -ne 2 ]]; then
     echo "Error: expected 2 localized InfoPlist.strings files (en, zh-Hans), found $INFO_PLIST_COUNT." >&2
@@ -358,7 +334,10 @@ bash "$ROOT/scripts/verify-platform-version.sh" "$CONTENTS/MacOS/StatusTrio" "$D
 SIGNING_IDENTITY="${CODE_SIGN_IDENTITY:--}"
 SIGNING_ARGS=(--force --deep --sign "$SIGNING_IDENTITY")
 if [[ "$SIGNING_IDENTITY" != "-" ]]; then
-    SIGNING_ARGS+=(--options runtime --timestamp)
+    SIGNING_ARGS+=(--options runtime)
+    if [[ "$CODE_SIGN_TIMESTAMP" == "1" ]]; then
+        SIGNING_ARGS+=(--timestamp)
+    fi
     if [[ -n "${KEYCHAIN_PATH:-}" ]]; then
         SIGNING_ARGS+=(--keychain "$KEYCHAIN_PATH")
     fi
@@ -373,7 +352,6 @@ if [[ "$PRIVILEGED_HELPER" == "1" && "$SIGNING_IDENTITY" == "-" ]]; then
 fi
 
 build_phase app-codesign
-codesign "${SIGNING_ARGS[@]}" "$CONTENTS/Frameworks/Sparkle.framework"
 while IFS= read -r -d '' mobile_library; do
     codesign "${SIGNING_ARGS[@]}" "$mobile_library"
 done < <(find "$CONTENTS/Frameworks/MobileBattery" -maxdepth 1 -type f -name '*.dylib*' -print0)

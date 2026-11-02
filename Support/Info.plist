@@ -11,7 +11,7 @@
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.lingsmbp.StatusTrio</string>
+	<string>local.henryz.StatusTrio</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -36,13 +36,5 @@
 	<string>Used to show the current Wi-Fi network name in the popover and, when you open Wi-Fi details, to read network names, scan results, and connection information.</string>
 	<key>STIncludesPrivilegedHelper</key>
 	<false/>
-	<key>STTelemetryProduction</key>
-	<false/>
-	<key>SUEnableInstallerLauncherService</key>
-	<true/>
-	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/lingyired/status-trio/main/appcast.xml</string>
-	<key>SUPublicEDKey</key>
-	<string>N5FLwhXCzo7Z/8z3lOWbOJ7aW04hvXxI7LUk+6f+yDQ=</string>
 </dict>
 </plist>

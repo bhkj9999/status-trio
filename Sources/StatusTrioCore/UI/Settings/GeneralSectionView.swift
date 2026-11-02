@@ -5,14 +5,10 @@ struct GeneralSectionView: View {
     @ObservedObject var localization: Localization
     var globalShortcutController: GlobalShortcutController? = nil
     @ObservedObject private var launchAtLogin: LaunchAtLoginManager = .shared
-    @ObservedObject private var updaterManager: UpdaterManager = .shared
 
     var body: some View {
         SettingsPage {
             systemGroup
-            if updaterManager.canCheckForUpdates {
-                updatesGroup
-            }
         }
         .onAppear {
             launchAtLogin.refresh()
@@ -137,17 +133,6 @@ struct GeneralSectionView: View {
                     .frame(width: 50, alignment: .trailing)
                 }
             }
-        }
-    }
-
-    private var updatesGroup: some View {
-        SettingsGroup(localization.string(.settingsUpdatesTitle)) {
-            SettingsToggleRow(
-                symbol: "arrow.triangle.2.circlepath",
-                tint: .green,
-                title: localization.string(.settingsUpdatesAutomatic),
-                isOn: updaterManager.automaticallyChecksForUpdatesBinding
-            )
         }
     }
 }

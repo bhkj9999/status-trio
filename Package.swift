@@ -9,14 +9,10 @@ let package = Package(
         .executable(name: "StatusTrio", targets: ["StatusTrio"]),
         .executable(name: "StatusTrioPowerHelper", targets: ["StatusTrioPowerHelper"])
     ],
-    dependencies: [
-        .package(url: "https://github.com/sparkle-project/Sparkle", from: "2.0.0")
-    ],
     targets: [
         .target(
             name: "StatusTrioCore",
             dependencies: [
-                .product(name: "Sparkle", package: "Sparkle"),
                 "DDCPrivateAPI",
                 "PowerUIPrivateAPI",
                 "PowerHelperProtocol"

@@ -2,7 +2,6 @@ import AppKit
 import SwiftUI
 
 struct AboutSectionView: View {
-    @ObservedObject private var updaterManager: UpdaterManager = .shared
     @EnvironmentObject private var localization: Localization
 
     var body: some View {
@@ -63,10 +62,7 @@ struct AboutSectionView: View {
 
                     SettingsDivider(inset: 0)
 
-                    AboutActionsView(
-                        canCheckForUpdates: updaterManager.canCheckForUpdates,
-                        onCheckForUpdates: { updaterManager.checkForUpdates() }
-                    )
+                    AboutActionsView()
                 }
                 .padding(.horizontal, SettingsMetrics.rowPaddingH)
                 .padding(.vertical, 14)
@@ -77,9 +73,6 @@ struct AboutSectionView: View {
 
 struct AboutActionsView: View {
     @EnvironmentObject private var localization: Localization
-
-    let canCheckForUpdates: Bool
-    let onCheckForUpdates: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -98,14 +91,6 @@ struct AboutActionsView: View {
                 .controlSize(.small)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-
-            if canCheckForUpdates {
-                Button(localization.string(.settingsUpdatesCheck)) {
-                    onCheckForUpdates()
-                }
-                .buttonStyle(.borderedProminent)
-                .controlSize(.small)
-            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

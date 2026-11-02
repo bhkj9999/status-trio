@@ -29,7 +29,6 @@ enum PopoverFooterPresentation {
 
 struct PopoverFooterView: View {
     @EnvironmentObject private var localization: Localization
-    @ObservedObject private var updaterManager: UpdaterManager = .shared
     let openSettings: () -> Void
     let quit: () -> Void
     /// Closes the status panel before an action opens another window. The panel
@@ -65,15 +64,6 @@ struct PopoverFooterView: View {
                 .fixedSize()
 
             Menu {
-                Button(localization.string(.menuCheckForUpdates)) {
-                    dismissPanel()
-                    updaterManager.checkForUpdates()
-                }
-                // Sparkle reports `canCheckForUpdates == false` while a check is
-                // in flight, which is exactly the disabled window the footer
-                // wants; while idle it enables itself again.
-                .disabled(!updaterManager.canCheckForUpdates)
-
                 Button(localization.format(.menuAbout, AppMetadata.name)) {
                     dismissPanel()
                     NSApplication.shared.orderFrontStandardAboutPanel(nil)
