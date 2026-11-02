@@ -100,11 +100,11 @@ final class BluetoothListeningModeSyntheticPreviewTests: XCTestCase {
     /// language's strings, proving the preview block can render in a tongue other
     /// than the panel's.
     func testPreviewLocalizationResolvesToRequestedLanguage() {
-        guard let german = PreviewLocalization.forCode("de") else {
-            return XCTFail("expected a German preview localization")
+        guard let chinese = PreviewLocalization.forCode("zh-Hans") else {
+            return XCTFail("expected a Simplified Chinese preview localization")
         }
-        XCTAssertEqual(german.resolvedLanguage, .german)
-        XCTAssertNotEqual(german.resolvedLanguage, .english)
+        XCTAssertEqual(chinese.resolvedLanguage, .simplifiedChinese)
+        XCTAssertNotEqual(chinese.resolvedLanguage, .english)
     }
 
     /// The empty code means "no override", and an unknown code is refused rather
@@ -119,15 +119,15 @@ final class BluetoothListeningModeSyntheticPreviewTests: XCTestCase {
     /// code always hands back the identical cached instance (so a refresh does not
     /// rebuild a Localization, and its locale observer does not multiply).
     func testPreviewLocalizationIsCachedAndLocalizesModeName() {
-        let first = PreviewLocalization.forCode("de")
-        let second = PreviewLocalization.forCode("de")
+        let first = PreviewLocalization.forCode("zh-Hans")
+        let second = PreviewLocalization.forCode("zh-Hans")
         XCTAssertTrue(first === second, "same code must reuse one instance")
 
         let english = Localization(defaults: UserDefaults(suiteName: "StatusTrio.Test.English")!, preferredLanguages: ["en"])
         english.setPreference(.language(.english))
-        let german = PreviewLocalization.forCode("de")!
+        let chinese = PreviewLocalization.forCode("zh-Hans")!
         XCTAssertNotEqual(
-            german.string(.bluetoothListeningModeNoiseCancellation),
+            chinese.string(.bluetoothListeningModeNoiseCancellation),
             english.string(.bluetoothListeningModeNoiseCancellation),
             "the override should surface a genuinely different translation"
         )

@@ -31,8 +31,8 @@ final class SettingsWindowControllerTests: VisibleUITestCase {
         XCTAssertTrue(window.isVisible)
         XCTAssertEqual(activationApplication.policies, [.regular])
 
-        localization.setPreference(.language(.german))
-        XCTAssertEqual(window.title, "Einstellungen")
+        localization.setPreference(.language(.english))
+        XCTAssertEqual(window.title, "Settings")
 
         controller.show()
         XCTAssertTrue(controller.window === window)

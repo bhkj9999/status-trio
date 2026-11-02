@@ -10,7 +10,6 @@ import Testing
         let localization = Localization(defaults: suite.defaults, preferredLanguages: ["en"])
 
         #expect(localization.string(.settingsAppleBackgroundRefreshInterval, language: .simplifiedChinese) == "后台更新电量的时间间隔")
-        #expect(localization.string(.settingsAppleBackgroundRefreshInterval, language: .traditionalChinese) == "背景更新電量的時間間隔")
     }
 
     @Test func sourceIDsAreDistinct() {

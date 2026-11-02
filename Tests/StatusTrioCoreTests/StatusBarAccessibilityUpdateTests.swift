@@ -53,9 +53,9 @@ struct StatusBarAccessibilityUpdateTests {
         let settled = recorder.values.count
         #expect(settled == 1)
 
-        localization.setPreference(.language(.french))
-        localization.setPreference(.language(.german))
-        localization.setPreference(.language(.japanese))
+        localization.setPreference(.language(.simplifiedChinese))
+        localization.setPreference(.language(.english))
+        localization.setPreference(.language(.simplifiedChinese))
 
         await recorder.waitForUpdate(atLeast: settled + 1)
         try await Task.sleep(for: .milliseconds(120))

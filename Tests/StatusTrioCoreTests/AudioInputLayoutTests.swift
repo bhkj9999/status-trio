@@ -6,7 +6,7 @@ import XCTest
 @MainActor
 final class AudioInputLayoutTests: XCTestCase {
     func testBusyStateKeepsInputControlsAtTheSameSize() throws {
-        for language in [AppLanguage.english, .simplifiedChinese, .german, .arabic] {
+        for language in AppLanguage.allCases {
             let idle = try size(busy: false, language: language)
             let busy = try size(busy: true, language: language)
             XCTAssertEqual(idle.width, busy.width, accuracy: 0.1, language.rawValue)
@@ -41,7 +41,7 @@ final class AudioInputLayoutTests: XCTestCase {
             .padding(14)
             .frame(width: 330)
             .environmentObject(localization)
-            .environment(\.layoutDirection, language == .arabic ? .rightToLeft : .leftToRight)
+            .environment(\.layoutDirection, language.layoutDirection)
         )
         return host.fittingSize
     }

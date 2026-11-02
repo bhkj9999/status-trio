@@ -770,7 +770,7 @@ final class BetterDisplayVolumeUITests: XCTestCase {
     }
 
     func testBetterDisplaySettingsCopyLoadsInEveryShippedLocale() throws {
-        XCTAssertEqual(AppLanguage.allCases.count, 12)
+        XCTAssertEqual(AppLanguage.allCases.count, 2)
         let distinctFailureKeys: [LocalizationKey] = [
             .settingsAudioExternalVolumeStatusAppAbsent,
             .settingsAudioExternalVolumeStatusUnresponsive,

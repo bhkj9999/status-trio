@@ -556,13 +556,10 @@ final class PanelPresentationMapperTests: XCTestCase {
         let battery = makeBattery(percentage: 68)
         let english = PanelPresentationMapper.battery(battery, localization: makeLocalization(.english))
         let chinese = PanelPresentationMapper.battery(battery, localization: makeLocalization(.simplifiedChinese))
-        let german = PanelPresentationMapper.battery(battery, localization: makeLocalization(.german))
 
         XCTAssertEqual(english.title, "Battery · 68%")
         XCTAssertEqual(chinese.title, "电池 · 68%")
-        XCTAssertEqual(german.title, "Batterie · 68%")
         XCTAssertNotEqual(english.title, chinese.title)
-        XCTAssertNotEqual(chinese.title, german.title)
     }
 
     func testInputIdentityTracksOnlyDefaultDeviceID() {

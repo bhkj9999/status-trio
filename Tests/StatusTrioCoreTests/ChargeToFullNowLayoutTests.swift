@@ -41,7 +41,7 @@ final class ChargeToFullNowLayoutTests: XCTestCase {
     }
 
     func testEverySupportedLanguageFitsThePopoverForAllButtonStates() throws {
-        XCTAssertEqual(AppLanguage.allCases.count, 12)
+        XCTAssertEqual(AppLanguage.allCases.count, 2)
 
         for language in AppLanguage.allCases {
             for presentation in [

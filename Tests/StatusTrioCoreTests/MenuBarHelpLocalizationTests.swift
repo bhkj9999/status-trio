@@ -37,13 +37,7 @@ final class MenuBarHelpLocalizationTests: XCTestCase {
     }
 
     func testLongAndRightToLeftHelpLayoutsKeepAFixedPopoverSize() {
-        for language in [
-            AppLanguage.english,
-            .simplifiedChinese,
-            .traditionalChinese,
-            .german,
-            .arabic
-        ] {
+        for language in AppLanguage.allCases {
             let (defaults, suiteName) = makeDefaults()
             defer { defaults.removePersistentDomain(forName: suiteName) }
             let localization = Localization(

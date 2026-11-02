@@ -29,8 +29,8 @@ final class WiFiSummaryTests: XCTestCase {
         for state in [WiFiState.off, .unavailable, .notAssociated, .noInternet, .shared, .temporary] {
             XCTAssertNil(summary(WiFiStatus(state: state, rssi: -58, ssid: "Example Network", band: .fiveGHz)))
         }
-        localization.setPreference(.language(.german))
-        XCTAssertEqual(summary(WiFiStatus(state: .connected, rssi: nil, ssid: "Example Network", band: .twoPointFourGHz)), "2,4 GHz")
+        localization.setPreference(.language(.simplifiedChinese))
+        XCTAssertEqual(summary(WiFiStatus(state: .connected, rssi: nil, ssid: "Example Network", band: .twoPointFourGHz)), "2.4 GHz")
     }
 
     func testVisibleAndAccessibleMeasurementsRequireActiveWiFiNotIdentity() {

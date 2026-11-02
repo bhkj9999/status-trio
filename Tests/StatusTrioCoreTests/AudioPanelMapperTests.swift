@@ -93,7 +93,7 @@ final class AudioPanelMapperTests: XCTestCase {
 
     func testInputUseMarkerAndErrorAreLocalizedInPanelState() {
         let english = makeLocalization(.english)
-        let german = makeLocalization(.german)
+        let chinese = makeLocalization(.simplifiedChinese)
         let status = makeInputStatus(
             devices: [AudioInputDevice(id: AudioDeviceID(1), uid: "mic", name: "Mic")],
             defaultDeviceID: AudioDeviceID(1),
@@ -102,12 +102,12 @@ final class AudioPanelMapperTests: XCTestCase {
         )
 
         let englishState = AudioPanelMapper.input(status, localization: english)
-        let germanState = AudioPanelMapper.input(status, localization: german)
+        let chineseState = AudioPanelMapper.input(status, localization: chinese)
 
         XCTAssertEqual(englishState.usageText, "In Use")
         XCTAssertEqual(englishState.errorText, "Could not switch input device.")
-        XCTAssertEqual(germanState.usageText, "In Benutzung")
-        XCTAssertEqual(germanState.errorText, "Eingabegerät konnte nicht gewechselt werden.")
+        XCTAssertEqual(chineseState.usageText, "使用中")
+        XCTAssertEqual(chineseState.errorText, "无法切换输入设备。")
     }
 
     func testVolumeUnavailableScalarStaysUnavailableAndControlsRespectCapabilities() {

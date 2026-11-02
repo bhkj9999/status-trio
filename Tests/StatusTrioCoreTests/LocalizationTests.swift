@@ -15,9 +15,9 @@ final class LocalizationTests: XCTestCase {
         }
         defer { cancellable.cancel() }
 
-        localization.setPreference(.language(.german))
+        localization.setPreference(.language(.simplifiedChinese))
 
-        XCTAssertEqual(observedLanguages.last, .german)
+        XCTAssertEqual(observedLanguages.last, .simplifiedChinese)
     }
 
     func testManualLanguagePersistsAndResolves() {
@@ -25,12 +25,12 @@ final class LocalizationTests: XCTestCase {
         defer { clear(suite) }
 
         let localization = Localization(defaults: suite.defaults, preferredLanguages: ["en"])
-        localization.setPreference(.language(.german))
+        localization.setPreference(.language(.simplifiedChinese))
 
-        XCTAssertEqual(localization.resolvedLanguage, .german)
+        XCTAssertEqual(localization.resolvedLanguage, .simplifiedChinese)
         XCTAssertEqual(
             Localization(defaults: suite.defaults, preferredLanguages: ["en"]).resolvedLanguage,
-            .german
+            .simplifiedChinese
         )
     }
 
@@ -44,7 +44,8 @@ final class LocalizationTests: XCTestCase {
         )
 
         XCTAssertEqual(localization.preference, .system)
-        XCTAssertEqual(localization.resolvedLanguage, .traditionalChinese)
+        // Traditional Chinese systems get the Simplified Chinese UI.
+        XCTAssertEqual(localization.resolvedLanguage, .simplifiedChinese)
     }
 
     func testInvalidStoredLanguageFallsBackToSystem() {
@@ -52,10 +53,19 @@ final class LocalizationTests: XCTestCase {
         defer { clear(suite) }
         suite.defaults.set("not-a-language", forKey: Localization.defaultsKey)
 
-        let localization = Localization(defaults: suite.defaults, preferredLanguages: ["ja-JP"])
+        let localization = Localization(defaults: suite.defaults, preferredLanguages: ["zh-CN"])
 
         XCTAssertEqual(localization.preference, .system)
-        XCTAssertEqual(localization.resolvedLanguage, .japanese)
+        XCTAssertEqual(localization.resolvedLanguage, .simplifiedChinese)
+    }
+
+    func testUnsupportedSystemLanguageFallsBackToEnglish() {
+        let suite = makeSuite()
+        defer { clear(suite) }
+
+        let localization = Localization(defaults: suite.defaults, preferredLanguages: ["ja-JP", "de-DE"])
+
+        XCTAssertEqual(localization.resolvedLanguage, .english)
     }
 
     func testEveryLanguageHasEveryNonEmptyKey() throws {
@@ -113,17 +123,7 @@ final class LocalizationTests: XCTestCase {
         let requiredMentions = ["MOS", "Scroll Reverser", "LinearMouse", "Status Trio"]
         let requiredGuidance: [AppLanguage: (scope: String, remedy: String)] = [
             .english: ("after turning this on", "exception/ignore list"),
-            .simplifiedChinese: ("如果开启后", "例外/忽略列表"),
-            .traditionalChinese: ("如果開啟後", "例外/忽略清單"),
-            .japanese: ("オンにした後も", "例外/無視リスト"),
-            .korean: ("이 옵션을 켠 후에도", "예외/무시 목록"),
-            .spanish: ("tras activar esta opción", "lista de excepciones/omisiones"),
-            .french: ("après avoir activé cette option", "liste d’exceptions/d’ignorés"),
-            .german: ("nach dem Aktivieren dieser Option", "Ausnahme-/Ignorierliste"),
-            .italian: ("dopo aver attivato questa opzione", "elenco di eccezioni/ignorati"),
-            .brazilianPortuguese: ("depois de ativar esta opção", "lista de exceções/ignorados"),
-            .russian: ("после включения этой опции", "список исключений/игнорирования"),
-            .arabic: ("بعد تشغيل هذا الخيار", "قائمة استثناءات/تجاهل")
+            .simplifiedChinese: ("如果开启后", "例外/忽略列表")
         ]
 
         for language in AppLanguage.allCases {
@@ -253,19 +253,19 @@ final class LocalizationTests: XCTestCase {
         XCTAssertEqual(lookupCount, 1)
     }
 
-    func testGermanResourceOverridesEnglish() {
+    func testChineseResourceOverridesEnglish() {
         let suite = makeSuite()
         defer { clear(suite) }
         let localization = Localization(defaults: suite.defaults, preferredLanguages: ["en"])
-        localization.setPreference(.language(.german))
+        localization.setPreference(.language(.simplifiedChinese))
 
-        XCTAssertEqual(localization.string(.menuSettings), "Einstellungen…")
+        XCTAssertEqual(localization.string(.menuSettings), "设置…")
     }
 
-    func testOnlyChineseLanguagesUseTheExtendedAboutLinks() {
+    func testOnlySimplifiedChineseIsChinese() {
         let detected = Set(AppLanguage.allCases.filter(\.isChinese))
 
-        XCTAssertEqual(detected, [.simplifiedChinese, .traditionalChinese])
+        XCTAssertEqual(detected, [.simplifiedChinese])
     }
 
     func testAboutLinkLabelsStayCompact() throws {

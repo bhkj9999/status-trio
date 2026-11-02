@@ -118,7 +118,7 @@ final class BatteryDetailsLayoutTests: XCTestCase {
     }
 
     func testFullPowerFlowAndApplicationListFitLightAndDarkPanels() async throws {
-        for language in [AppLanguage.english, .simplifiedChinese, .german, .arabic] {
+        for language in AppLanguage.allCases {
             for dark in [false, true] {
                 let size = try await render(language: language, available: true, connected: true,
                     charging: true, allPower: true, dark: dark, energyApps: true)

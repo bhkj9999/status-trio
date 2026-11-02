@@ -32,8 +32,8 @@ final class StatusMenuBuilderTests: XCTestCase {
         XCTAssertEqual(menu.userInterfaceLayoutDirection, .leftToRight)
     }
 
-    func testGermanMenuUsesSelectedLanguage() {
-        let localization = makeLocalization(.german)
+    func testEnglishMenuUsesSelectedLanguage() {
+        let localization = makeLocalization(.english)
         let menu = StatusMenuBuilder.makeMenu(
             version: "1.0.0",
             settingsTarget: nil,
@@ -43,22 +43,10 @@ final class StatusMenuBuilderTests: XCTestCase {
 
         XCTAssertEqual(menu.items.map(\.title), [
             "Status Trio 1.0.0",
-            "Einstellungen…",
+            "Settings…",
             "",
-            "Status Trio beenden"
+            "Quit Status Trio"
         ])
-    }
-
-    func testArabicMenuUsesRightToLeftLayout() {
-        let localization = makeLocalization(.arabic)
-        let menu = StatusMenuBuilder.makeMenu(
-            version: "1.0.0",
-            settingsTarget: nil,
-            settingsAction: nil,
-            localization: localization
-        )
-
-        XCTAssertEqual(menu.userInterfaceLayoutDirection, .rightToLeft)
     }
 
     func testSettingsItemUsesProvidedTargetAndAction() {

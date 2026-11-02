@@ -13,7 +13,7 @@ final class CompactAudioLayoutTests: XCTestCase {
     }
 
     func testLongDeviceNamesAndLocalizedControlsFitPopover() throws {
-        for language in [AppLanguage.english, .simplifiedChinese, .german, .arabic] {
+        for language in AppLanguage.allCases {
             let size = try render(alwaysShowAll: false, language: language, dark: true)
             XCTAssertGreaterThan(size.size.height, 200)
             XCTAssertLessThan(size.size.height, 450)
@@ -106,7 +106,7 @@ final class CompactAudioLayoutTests: XCTestCase {
             .background(dark ? Color(white: 0.15) : Color(white: 0.96))
             .environmentObject(localization)
             .environment(\.colorScheme, dark ? .dark : .light)
-            .environment(\.layoutDirection, language == .arabic ? .rightToLeft : .leftToRight)
+            .environment(\.layoutDirection, language.layoutDirection)
         )
         let hosting = NSHostingView(rootView: view)
         hosting.appearance = NSAppearance(named: dark ? .darkAqua : .aqua)

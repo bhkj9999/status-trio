@@ -230,8 +230,8 @@ if [[ -n "$SU_FEED_URL" ]]; then
     /usr/libexec/PlistBuddy -c "Set :SUFeedURL $SU_FEED_URL" "$CONTENTS/Info.plist"
 fi
 INFO_PLIST_COUNT="$(find "$ROOT/Sources/StatusTrioCore/Resources" -name 'InfoPlist.strings' -type f | wc -l | tr -d ' ')"
-if [[ "$INFO_PLIST_COUNT" -ne 12 ]]; then
-    echo "Error: expected 12 localized InfoPlist.strings files, found $INFO_PLIST_COUNT." >&2
+if [[ "$INFO_PLIST_COUNT" -ne 2 ]]; then
+    echo "Error: expected 2 localized InfoPlist.strings files (en, zh-Hans), found $INFO_PLIST_COUNT." >&2
     exit 1
 fi
 
