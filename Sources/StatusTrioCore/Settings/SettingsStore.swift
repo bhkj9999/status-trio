@@ -6,8 +6,6 @@ import Foundation
 final class SettingsStore: ObservableObject {
     static let hasCompletedIconGuideOnboardingDefaultsKey = "hasCompletedIconGuideOnboarding.v1"
     static let hasSeenIconGuideDefaultsKey = "hasSeenIconGuide"
-    static let sharesAnonymousAnalyticsDefaultsKey = "sharesAnonymousAnalytics"
-    static let telemetryConsentVersionDefaultsKey = "telemetryConsentVersion"
     static let statusPanelShortcutDefaultsKey = "statusPanelShortcut.v1"
     private static let sparkleHasLaunchedBeforeDefaultsKey = "SUHasLaunchedBefore"
 
@@ -173,8 +171,6 @@ final class SettingsStore: ObservableObject {
     static let appIconPlacementDefaultsKey = "appIconPlacement"
     static let dockIconBackgroundPreferenceDefaultsKey = "dockIconBackgroundPreference"
 
-    @Published private(set) var sharesAnonymousAnalytics: Bool
-    @Published private(set) var telemetryConsentVersion: Int
     @Published var statusPanelShortcut: StatusPanelShortcut? {
         didSet {
             guard let statusPanelShortcut,
@@ -185,55 +181,6 @@ final class SettingsStore: ObservableObject {
             defaults.set(data, forKey: Self.statusPanelShortcutDefaultsKey)
         }
     }
-    private let telemetryConsentSubject = PassthroughSubject<TelemetryConsent, Never>()
-
-    var canShareAnonymousAnalytics: Bool {
-        telemetryConsentSnapshot.canShareAnonymousAnalytics
-    }
-
-    var telemetryConsentSnapshot: TelemetryConsent {
-        TelemetryConsent(
-            version: telemetryConsentVersion,
-            sharesAnonymousAnalytics: sharesAnonymousAnalytics
-        )
-    }
-
-    var telemetryConsentUpdates: AnyPublisher<TelemetryConsent, Never> {
-        telemetryConsentSubject.eraseToAnyPublisher()
-    }
-
-    func completeTelemetryConsent(sharesAnalytics: Bool) {
-        guard let recordedVersion = consentVersionToRecord(grants: sharesAnalytics) else { return }
-
-        // Persist both values before emitting one coherent snapshot. @Published
-        // emits before didSet, so observers must use this explicit publisher.
-        defaults.set(sharesAnalytics, forKey: Self.sharesAnonymousAnalyticsDefaultsKey)
-        defaults.set(recordedVersion, forKey: Self.telemetryConsentVersionDefaultsKey)
-        sharesAnonymousAnalytics = sharesAnalytics
-        telemetryConsentVersion = recordedVersion
-        telemetryConsentSubject.send(telemetryConsentSnapshot)
-    }
-
-    /// The version to store alongside a new analytics answer, or `nil` when the
-    /// answer must be dropped.
-    ///
-    /// A stored version newer than this build means the user answered a newer
-    /// prompt and then went back to an older build. Granting is refused then —
-    /// this build cannot speak for a prompt it never showed — but withdrawing
-    /// is not: consent has to stay revocable, otherwise the analytics toggle
-    /// silently refuses to move. A withdrawal keeps the stored version, so the
-    /// newer build still sees the answer it recorded together with `false`.
-    private func consentVersionToRecord(grants: Bool) -> Int? {
-        if telemetryConsentVersion > TelemetryConsent.currentVersion {
-            return grants ? nil : telemetryConsentVersion
-        }
-        return TelemetryConsent.currentVersion
-    }
-
-    func setSharesAnonymousAnalytics(_ enabled: Bool) {
-        completeTelemetryConsent(sharesAnalytics: enabled)
-    }
-
     @Published var hasCompletedIconGuideOnboarding: Bool {
         didSet {
             defaults.set(
@@ -1498,31 +1445,6 @@ final class SettingsStore: ObservableObject {
             .data(forKey: Self.statusPanelShortcutDefaultsKey)
             .flatMap { try? JSONDecoder().decode(StatusPanelShortcut.self, from: $0) }
         let appleMigration = AppleDeviceSettingsMigration.migrate(defaults: defaults)
-        let hadLegacyInstallMarker =
-            defaults.bool(forKey: Self.sparkleHasLaunchedBeforeDefaultsKey)
-            || defaults.bool(forKey: Self.hasSeenIconGuideDefaultsKey)
-            || defaults.bool(forKey: Self.hasCompletedIconGuideOnboardingDefaultsKey)
-        if let storedConsentVersion = defaults.object(
-            forKey: Self.telemetryConsentVersionDefaultsKey
-        ) as? Int {
-            self.telemetryConsentVersion = storedConsentVersion
-            self.sharesAnonymousAnalytics = defaults.bool(
-                forKey: Self.sharesAnonymousAnalyticsDefaultsKey
-            )
-        } else if hadLegacyInstallMarker {
-            self.telemetryConsentVersion = TelemetryConsent.currentVersion
-            self.sharesAnonymousAnalytics = false
-            defaults.set(false, forKey: Self.sharesAnonymousAnalyticsDefaultsKey)
-            defaults.set(
-                TelemetryConsent.currentVersion,
-                forKey: Self.telemetryConsentVersionDefaultsKey
-            )
-        } else {
-            self.telemetryConsentVersion = 0
-            self.sharesAnonymousAnalytics = false
-            defaults.set(false, forKey: Self.sharesAnonymousAnalyticsDefaultsKey)
-            defaults.set(0, forKey: Self.telemetryConsentVersionDefaultsKey)
-        }
         let storedTrustedMetadata = Self.decodedTrustedAppleDeviceMetadata(
             defaults.data(forKey: Self.trustedAppleDeviceMetadataDefaultsKey)
         )

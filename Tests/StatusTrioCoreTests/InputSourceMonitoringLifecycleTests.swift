@@ -110,8 +110,7 @@ final class InputSourceMonitoringLifecycleTests: VisibleUITestCase {
             chargingEffectMotionMonitor: ChargingEffectMotionMonitor(
                 readReduceMotion: { false },
                 notificationCenter: NotificationCenter()
-            ),
-            telemetryReporter: LifecycleStubTelemetryReporter()
+            )
         )
     }
 }
@@ -139,12 +138,6 @@ private final class CountingInputSourceReader: InputSourceReading {
             )
         ]
     }
-}
-
-@MainActor
-private final class LifecycleStubTelemetryReporter: TelemetryReporting {
-    func start() {}
-    func stop() {}
 }
 
 @MainActor

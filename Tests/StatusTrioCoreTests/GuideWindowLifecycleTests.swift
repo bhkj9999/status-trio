@@ -43,7 +43,6 @@ final class GuideWindowLifecycleTests: VisibleUITestCase {
         defer { fixture.tearDown() }
         let settings = SettingsStore(defaults: fixture.defaults)
         settings.hasCompletedIconGuideOnboarding = true
-        settings.completeTelemetryConsent(sharesAnalytics: false)
         var presentations: [SettingsWindowPresentation] = []
         let controller = OnboardingWindowController(
             settings: settings,
@@ -131,7 +130,6 @@ final class GuideWindowLifecycleTests: VisibleUITestCase {
         let fixture = try DefaultsFixture()
         defer { fixture.tearDown() }
         let settings = SettingsStore(defaults: fixture.defaults)
-        XCTAssertEqual(settings.telemetryConsentVersion, 0)
 
         for language in AppLanguage.allCases {
             let localization = Localization(

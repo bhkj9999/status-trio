@@ -394,7 +394,6 @@ private final class DockChargingEnvironmentFixture {
         settings.appIconPlacement = placement
         settings.showsChargingEffect = true
         settings.hasCompletedIconGuideOnboarding = true
-        settings.completeTelemetryConsent(sharesAnalytics: false)
         self.settings = settings
         self.presenter = presenter
         self.clock = clock
@@ -483,8 +482,7 @@ private final class DockChargingEnvironmentFixture {
                 notificationCenter: NotificationCenter()
             ),
             dockChargingAnimationPresenter: presenter,
-            dockVisibilityMonitor: dockVisibilityMonitor,
-            telemetryReporter: DockChargingIdleTelemetryReporter()
+            dockVisibilityMonitor: dockVisibilityMonitor
         )
     }
 
@@ -892,10 +890,4 @@ private final class DockChargingIdleVolumeMonitor: VolumeMonitoring {
     func stop() {}
     func refresh() {}
     func recover() {}
-}
-
-@MainActor
-private final class DockChargingIdleTelemetryReporter: TelemetryReporting {
-    func start() {}
-    func stop() {}
 }

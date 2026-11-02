@@ -175,7 +175,6 @@ final class PreviewResourceLifecycleTests: VisibleUITestCase {
         defer { fixture.tearDown() }
         let settings = SettingsStore(defaults: fixture.defaults)
         settings.hasCompletedIconGuideOnboarding = true
-        settings.completeTelemetryConsent(sharesAnalytics: false)
         settings.appIconPlacement = .dock
         let localization = Localization(
             defaults: fixture.defaults,
@@ -251,7 +250,6 @@ final class PreviewResourceLifecycleTests: VisibleUITestCase {
                 readReduceMotion: { false },
                 notificationCenter: NotificationCenter()
             ),
-            telemetryReporter: PreviewTelemetryReporter(),
             memoryPressureMonitor: MemoryPressureMonitor { _ in
                 PreviewPressureSource()
             },
@@ -381,12 +379,6 @@ private final class PreviewActivationApplication:
     }
 
     func setApplicationIconImage(_ image: NSImage?) {}
-}
-
-@MainActor
-private final class PreviewTelemetryReporter: TelemetryReporting {
-    func start() {}
-    func stop() {}
 }
 
 @MainActor

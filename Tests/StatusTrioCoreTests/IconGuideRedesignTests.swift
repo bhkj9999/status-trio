@@ -422,13 +422,11 @@ final class IconGuideRedesignTests: XCTestCase {
             }
         }
 
-        // Consent already recorded: neither page renders the card, so both
-        // pages settle to the same height in every language.
+        // Both pages settle to the same height in every language.
         let consentedName = "IconGuideRedesignTests.consent.\(UUID().uuidString)"
         let consentedDefaults = UserDefaults(suiteName: consentedName)!
         defer { consentedDefaults.removeTestSuite(named: consentedName) }
         let consented = SettingsStore(defaults: consentedDefaults)
-        consented.completeTelemetryConsent(sharesAnalytics: false)
         for language in AppLanguage.allCases {
             let anatomy = preferredHeight(
                 of: .anatomy,

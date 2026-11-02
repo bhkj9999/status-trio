@@ -19,7 +19,6 @@ final class AppEnvironment {
     let globalShortcutController: GlobalShortcutController?
     let dockChargingAnimationPresenter: (any DockChargingAnimationPresenting)?
     let dockVisibilityMonitor: (any DockVisibilityMonitoring)?
-    let telemetryReporter: any TelemetryReporting
     let bluetoothAudioIconOverrideSynchronizer = BluetoothAudioIconOverrideSynchronizer()
     private let bluetoothProfilerCache: BluetoothProfilerReportCache
     private let bluetoothNearbyBatteryOptOutSynchronizer = BluetoothNearbyBatteryOptOutSynchronizer()
@@ -55,7 +54,6 @@ final class AppEnvironment {
         globalShortcutController: GlobalShortcutController? = nil,
         dockChargingAnimationPresenter: (any DockChargingAnimationPresenting)? = nil,
         dockVisibilityMonitor: (any DockVisibilityMonitoring)? = nil,
-        telemetryReporter: any TelemetryReporting,
         memoryPressureMonitor: MemoryPressureMonitor? = nil,
         bluetoothProfilerCache: BluetoothProfilerReportCache = .shared,
         previewResourceLifecycle: PreviewResourceLifecycle? = nil,
@@ -77,7 +75,6 @@ final class AppEnvironment {
         self.globalShortcutController = globalShortcutController
         self.dockChargingAnimationPresenter = dockChargingAnimationPresenter
         self.dockVisibilityMonitor = dockVisibilityMonitor
-        self.telemetryReporter = telemetryReporter
         self.memoryPressureMonitor = memoryPressureMonitor ?? MemoryPressureMonitor()
         self.bluetoothProfilerCache = bluetoothProfilerCache
         self.previewResourceLifecycle = previewResourceLifecycle ?? PreviewResourceLifecycle()
@@ -143,13 +140,11 @@ final class AppEnvironment {
         store.bindExternalVolumeSettings(settings)
         store.bindExternalBrightnessSettings(settings)
         store.start()
-        telemetryReporter.start()
     }
 
     func stop() {
         memoryPressureMonitor.stop()
         memoryPressureMonitor.onPressure = nil
-        telemetryReporter.stop()
         globalShortcutController?.stop()
         chargingEffectClock.stop()
         statusBarController.visibilityDidChange = nil
@@ -542,33 +537,6 @@ final class AppEnvironment {
             localization: localization,
             openSettings: { resolvedSettingsWindowController.show() }
         )
-        let telemetryConfiguration = TelemetryConfiguration()
-        let telemetryTransport = URLSessionTelemetryTransport(configuration: telemetryConfiguration)
-        let telemetryClient = TelemetryClient(
-            transport: telemetryTransport,
-            configuration: telemetryConfiguration
-        )
-        let telemetryReporter = TelemetryReporter(
-            settings: settings,
-            localization: localization,
-            client: telemetryClient,
-            eligibilityContext: TelemetryEligibilityContext(
-                bundleIdentifier: Bundle.main.bundleIdentifier,
-                productionMarker: Bundle.main.object(forInfoDictionaryKey: "STTelemetryProduction") as? Bool ?? false,
-                isDebugBuild: Self.isDebugBuild
-            ),
-            configuration: telemetryConfiguration,
-            snapshotContext: { language, placement in
-                TelemetryAppMetadata.snapshot(
-                    appVersion: Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String,
-                    build: Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String,
-                    osVersion: TelemetryAppMetadata.currentOSVersion,
-                    preferredLanguages: Locale.preferredLanguages,
-                    appLanguage: language,
-                    appIconPlacement: placement
-                )
-            }
-        )
         return AppEnvironment(
             store: store,
             settings: settings,
@@ -586,16 +554,7 @@ final class AppEnvironment {
             globalShortcutController: globalShortcutController,
             dockChargingAnimationPresenter: dockChargingAnimationPresenter,
             dockVisibilityMonitor: dockVisibilityMonitor,
-            telemetryReporter: telemetryReporter,
             backgroundUITesting: backgroundUITesting
         )
-    }
-
-    private static var isDebugBuild: Bool {
-        #if DEBUG
-        true
-        #else
-        false
-        #endif
     }
 }

@@ -9,7 +9,6 @@ struct IconGuideOnboardingView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var page: IconGuidePage = .anatomy
     @State private var menuBarHelp = MenuBarHelpPresentation()
-    @State private var telemetryConsentDraft = TelemetryConsentDraft()
     let onCustomize: () -> Void
     let onDone: () -> Void
     /// Reports the view's intrinsic content height so the hosting window can
@@ -67,16 +66,7 @@ struct IconGuideOnboardingView: View {
 
             Divider()
 
-            // The consent lives in the footer on both pages, so both pages are
-            // exactly the same height and the consent never floats in a big
-            // empty block below one page's content.
-            VStack(alignment: .leading, spacing: 12) {
-                if settings.telemetryConsentVersion == 0 {
-                    telemetryConsentRow
-                }
-
-                footer
-            }
+            footer
             .padding(.horizontal, 28)
             .padding(.top, 18)
             .padding(.bottom, 22)
@@ -180,46 +170,7 @@ struct IconGuideOnboardingView: View {
         }
     }
 
-    /// Compact consent block shown on every page while consent is unrecorded.
-    /// Keeping it in the footer makes both pages the same height.
-    private var telemetryConsentRow: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            HStack(alignment: .center, spacing: 8) {
-                Toggle("", isOn: $telemetryConsentDraft.sharesAnalytics)
-                    .labelsHidden()
-                    .toggleStyle(.checkbox)
-                    .accessibilityLabel(localization.string(.onboardingAnalyticsToggle))
-
-                Text(localization.string(.onboardingAnalyticsToggle))
-                    .font(.system(size: 12, weight: .semibold))
-
-                Spacer(minLength: 8)
-
-                Link(
-                    localization.string(.settingsAnalyticsPrivacyDetails),
-                    destination: URL(string: "https://github.com/lingyired/status-trio/blob/main/docs/privacy-telemetry.md")!
-                )
-                .font(.system(size: 11))
-            }
-
-            // Indent under the label so the sentence sits in a clear text column
-            // beside the checkbox instead of running full width.
-            Text(localization.string(.onboardingAnalyticsDescription))
-                .font(.system(size: 11))
-                .foregroundStyle(.secondary)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.leading, 22)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
-        .background(
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(Color.secondary.opacity(0.04))
-        )
-    }
-
     private func completeOnboarding(_ action: () -> Void) {
-        telemetryConsentDraft.acknowledge(settings: settings)
         action()
     }
 }
