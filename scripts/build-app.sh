@@ -332,7 +332,9 @@ chmod +x "$CONTENTS/MacOS/StatusTrio"
 bash "$ROOT/scripts/verify-platform-version.sh" "$CONTENTS/MacOS/StatusTrio" "$DECLARED_MINOS"
 
 SIGNING_IDENTITY="${CODE_SIGN_IDENTITY:--}"
-SIGNING_ARGS=(--force --deep --sign "$SIGNING_IDENTITY")
+# No --deep: every nested binary is signed explicitly below, and a deep
+# re-sign of the bundle would overwrite their individual options.
+SIGNING_ARGS=(--force --sign "$SIGNING_IDENTITY")
 if [[ "$SIGNING_IDENTITY" != "-" ]]; then
     SIGNING_ARGS+=(--options runtime)
     if [[ "$CODE_SIGN_TIMESTAMP" == "1" ]]; then
@@ -340,6 +342,19 @@ if [[ "$SIGNING_IDENTITY" != "-" ]]; then
     fi
     if [[ -n "${KEYCHAIN_PATH:-}" ]]; then
         SIGNING_ARGS+=(--keychain "$KEYCHAIN_PATH")
+    fi
+fi
+
+# A self-signed identity has no Team ID, and the hardened runtime's library
+# validation then rejects the helper's bundled dylibs as coming from a
+# "different team" even though one certificate signed them all. The mobile
+# battery helper is the only binary that loads bundled libraries, so outside
+# Developer ID signing it and its libraries are signed without the runtime.
+MOBILE_SIGNING_ARGS=("${SIGNING_ARGS[@]}")
+if [[ "$SIGNING_IDENTITY" != "-" && "$SIGNING_IDENTITY" != "Developer ID"* ]]; then
+    MOBILE_SIGNING_ARGS=(--force --sign "$SIGNING_IDENTITY")
+    if [[ -n "${KEYCHAIN_PATH:-}" ]]; then
+        MOBILE_SIGNING_ARGS+=(--keychain "$KEYCHAIN_PATH")
     fi
 fi
 
@@ -353,9 +368,9 @@ fi
 
 build_phase app-codesign
 while IFS= read -r -d '' mobile_library; do
-    codesign "${SIGNING_ARGS[@]}" "$mobile_library"
+    codesign "${MOBILE_SIGNING_ARGS[@]}" "$mobile_library"
 done < <(find "$CONTENTS/Frameworks/MobileBattery" -maxdepth 1 -type f -name '*.dylib*' -print0)
-codesign "${SIGNING_ARGS[@]}" "$CONTENTS/Helpers/StatusTrioMobileBatteryHelper"
+codesign "${MOBILE_SIGNING_ARGS[@]}" "$CONTENTS/Helpers/StatusTrioMobileBatteryHelper"
 if [[ "$PRIVILEGED_HELPER" == "1" ]]; then
     codesign "${SIGNING_ARGS[@]}" "$CONTENTS/Helpers/StatusTrioPowerHelper"
 fi
