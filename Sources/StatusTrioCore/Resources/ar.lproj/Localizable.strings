@@ -129,10 +129,6 @@
 "settings.about.description" = "تطبيق macOS أصلي يجمع Wi-Fi والبطارية ومستوى الصوت في رمز مدمج واحد في شريط القوائم. مستوحى من رمز شريط الحالة المدمج في iPhone Duo، ويستخدم مستوى الصوت بدل بيانات الشبكة الخلوية على Mac.";
 "settings.about.project" = "الموقع";
 "settings.about.repository" = "GitHub";
-"settings.about.author" = "المؤلف";
-"settings.about.authorRole" = "المنشئ والمشرف";
-"settings.about.website" = "الموقع";
-"settings.about.starOnGitHub" = "نجمة على GitHub";
 "settings.about.copyright" = "© lingyired";
 "settings.battery.title" = "عرض البطارية";
 "settings.battery.noBatteryNotice" = "لا يحتوي هذا الجهاز على بطارية، لذا يُعرض مستوى البطارية على أنه 100 افتراضيًا.";
@@ -652,27 +648,8 @@
 "settings.brightness.backend" = "خلفية السطوع لـ %@";
 
 // About: community, author social links and more apps
-"settings.about.social.title" = "متابعة المؤلف";
-"settings.about.social.douyin" = "Douyin";
-"settings.about.social.xiaohongshu" = "Xiaohongshu";
-"settings.about.social.bilibili" = "Bilibili";
-"settings.about.social.blog" = "المدونة";
-"settings.about.community.title" = "المجتمع";
-"settings.about.community.qq" = "مجموعة QQ";
-"settings.about.community.qqDescription" = "انضم إلى مجموعة Status Trio للأسئلة والملاحظات.";
-"settings.about.community.wechat" = "مجموعة WeChat";
-"settings.about.community.wechatDescription" = "امسح باستخدام WeChat للانضمام إلى مجموعة Status Trio. يتم تجديد رمز QR دوريًا؛ راجع README على GitHub للحصول على الأحدث.";
-"settings.about.community.copy" = "نسخ";
-"settings.about.community.copied" = "تم النسخ";
-"settings.about.moreApps.title" = "أعمال أخرى للمؤلف";
-"settings.about.moreApps.open" = "فتح";
-"settings.about.moreApps.newtab01Description" = "علامة تبويب جديدة قائمة على الإشارات المرجعية: افتح المجلدات كمجموعات علامات تبويب أو في عرض منقسم، مع عدة سمات.";
-"settings.about.moreApps.noLazyloadDescription" = "عطّل التحميل المتأخر للصور في المتصفح حتى تُحمّل الصفحة جميع الصور دفعة واحدة دون الحاجة إلى التمرير.";
-"settings.about.moreApps.fund01Description" = "متابعة محفظة الصناديق: نسبة تغيّر اليوم دائمًا في شريط القوائم أو شريط المهام، مع تحديث عدة مجموعات مباشرةً.";
 
 // About: community WeChat QR refresh
-"settings.about.community.refresh" = "Refresh";
-"settings.about.community.refreshFailed" = "Couldn’t load the latest QR code. Try again.";
 
 "guide.partPosition.battery" = "Top arc";
 "guide.partPosition.network" = "Middle icon";

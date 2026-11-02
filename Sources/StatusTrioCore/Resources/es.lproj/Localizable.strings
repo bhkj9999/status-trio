@@ -146,10 +146,6 @@
 "settings.about.description" = "Una app nativa de macOS que reúne Wi-Fi, batería y volumen en un icono compacto de la barra de menús. Inspirada en el icono combinado de la barra de estado del iPhone Duo, usa el volumen en lugar de los datos móviles en el Mac.";
 "settings.about.project" = "Sitio web";
 "settings.about.repository" = "GitHub";
-"settings.about.author" = "Autor";
-"settings.about.authorRole" = "Creador y responsable";
-"settings.about.website" = "Sitio web";
-"settings.about.starOnGitHub" = "Destacar en GitHub";
 "settings.about.copyright" = "© lingyired";
 "settings.battery.title" = "Visualización de la batería";
 "settings.battery.noBatteryNotice" = "Este dispositivo no tiene batería, por lo que el nivel de batería se muestra como 100 de forma predeterminada.";
@@ -652,27 +648,8 @@
 "settings.brightness.backend" = "Backend de brillo para %@";
 
 // About: community, author social links and more apps
-"settings.about.social.title" = "Seguir al autor";
-"settings.about.social.douyin" = "Douyin";
-"settings.about.social.xiaohongshu" = "Xiaohongshu";
-"settings.about.social.bilibili" = "Bilibili";
-"settings.about.social.blog" = "Blog";
-"settings.about.community.title" = "Comunidad";
-"settings.about.community.qq" = "Grupo de QQ";
-"settings.about.community.qqDescription" = "Únete al grupo de Status Trio para preguntas y comentarios.";
-"settings.about.community.wechat" = "Grupo de WeChat";
-"settings.about.community.wechatDescription" = "Escanea con WeChat para unirte al grupo de Status Trio. El código QR se renueva periódicamente; consulta el README de GitHub para el más reciente.";
-"settings.about.community.copy" = "Copiar";
-"settings.about.community.copied" = "Copiado";
-"settings.about.moreApps.title" = "Más del autor";
-"settings.about.moreApps.open" = "Abrir";
-"settings.about.moreApps.newtab01Description" = "Nueva pestaña basada en marcadores: abre carpetas como grupos de pestañas o en vista dividida, con varios temas.";
-"settings.about.moreApps.noLazyloadDescription" = "Desactiva la carga diferida de imágenes del navegador para que la página cargue todas las imágenes de una vez, sin tener que desplazarte.";
-"settings.about.moreApps.fund01Description" = "Seguimiento de fondos: la variación del día siempre en la barra de menús o la barra de tareas, con varios grupos actualizados en vivo.";
 
 // About: community WeChat QR refresh
-"settings.about.community.refresh" = "Refresh";
-"settings.about.community.refreshFailed" = "Couldn’t load the latest QR code. Try again.";
 
 "guide.partPosition.battery" = "Top arc";
 "guide.partPosition.network" = "Middle icon";

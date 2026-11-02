@@ -58,10 +58,14 @@ final class AppMetadataTests: XCTestCase {
         XCTAssertEqual(AppMetadata.versionDisplayString(from: [:]), "1.0.0 (1)")
     }
 
-    func testProjectHomepageURL() {
+    func testRepositoryLinksPointAtTheForkAndItsUpstream() {
         XCTAssertEqual(
-            AppMetadata.projectHomepageURL.absoluteString,
-            "https://statustrio.lingai.net/"
+            AppMetadata.repositoryURL.absoluteString,
+            "https://github.com/bhkj9999/status-trio"
+        )
+        XCTAssertEqual(
+            AppMetadata.upstreamRepositoryURL.absoluteString,
+            "https://github.com/lingyired/status-trio"
         )
     }
 

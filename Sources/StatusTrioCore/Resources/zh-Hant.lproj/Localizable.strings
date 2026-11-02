@@ -146,10 +146,6 @@
 "settings.about.description" = "將 Wi-Fi、電池和音量整合為一個簡潔選單列狀態圖示的原生 macOS 應用程式。靈感源自 iPhone Duo 的組合狀態列圖示，並在 Mac 上以音量取代行動網路。";
 "settings.about.project" = "專案首頁";
 "settings.about.repository" = "GitHub";
-"settings.about.author" = "作者";
-"settings.about.authorRole" = "作者與維護者";
-"settings.about.website" = "作者首頁";
-"settings.about.starOnGitHub" = "在 GitHub 上標星";
 "settings.about.copyright" = "© lingyired";
 "settings.battery.title" = "電池顯示";
 "settings.battery.noBatteryNotice" = "目前裝置沒有電池，所以電量顯示預設為 100。";
@@ -652,27 +648,8 @@
 "settings.brightness.backend" = "%@ 的亮度後端";
 
 // About: community, author social links and more apps
-"settings.about.social.title" = "關注作者";
-"settings.about.social.douyin" = "抖音";
-"settings.about.social.xiaohongshu" = "小紅書";
-"settings.about.social.bilibili" = "嗶哩嗶哩";
-"settings.about.social.blog" = "個人部落格";
-"settings.about.community.title" = "加入社群";
-"settings.about.community.qq" = "QQ 群";
-"settings.about.community.qqDescription" = "加入 Status Trio 使用者群，交流問題與回饋。";
-"settings.about.community.wechat" = "微信群";
-"settings.about.community.wechatDescription" = "掃碼加入 Status Trio 微信群。二維碼會定期更新，點「重新整理」可取得 GitHub 上的最新二維碼。";
-"settings.about.community.copy" = "複製";
-"settings.about.community.copied" = "已複製";
-"settings.about.moreApps.title" = "作者的其他作品";
-"settings.about.moreApps.open" = "開啟";
-"settings.about.moreApps.newtab01Description" = "書籤驅動的新分頁：資料夾一鍵開成分頁群組或分割檢視，多套主題。";
-"settings.about.moreApps.noLazyloadDescription" = "禁用瀏覽器的圖片延遲載入，讓頁面一開啟就載入全部圖片，不必邊捲動邊載入。";
-"settings.about.moreApps.fund01Description" = "基金持股盯盤，漲跌幅常駐選單列 / 工作列，多群組即時更新。";
 
 // About: community WeChat QR refresh
-"settings.about.community.refresh" = "重新整理";
-"settings.about.community.refreshFailed" = "二維碼載入失敗，請重試。";
 
 "guide.partPosition.battery" = "頂部圓弧";
 "guide.partPosition.network" = "中間圖標";

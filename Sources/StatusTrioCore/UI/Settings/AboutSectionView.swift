@@ -71,22 +71,6 @@ struct AboutSectionView: View {
                 .padding(.horizontal, SettingsMetrics.rowPaddingH)
                 .padding(.vertical, 14)
             }
-
-            SettingsGroup(localization.string(.settingsAboutSocialTitle)) {
-                AboutSocialLinksView()
-                    .padding(.horizontal, SettingsMetrics.rowPaddingH)
-                    .padding(.vertical, 12)
-            }
-
-            if localization.resolvedLanguage.isChinese {
-                SettingsGroup(localization.string(.settingsAboutCommunityTitle)) {
-                    AboutCommunityView()
-                }
-            }
-
-            SettingsGroup(localization.string(.settingsAboutMoreAppsTitle)) {
-                AboutMoreAppsView()
-            }
         }
     }
 }
@@ -101,28 +85,13 @@ struct AboutActionsView: View {
         VStack(alignment: .leading, spacing: 8) {
             WrappingHStack(spacing: 8, rowSpacing: 8) {
                 Link(destination: AppMetadata.repositoryURL) {
-                    HStack(spacing: 4) {
-                        Image(systemName: "star.fill")
-                            .foregroundStyle(.yellow)
-                        Text(localization.string(.settingsAboutStarOnGitHub))
-                    }
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-
-                Link(destination: AppMetadata.projectHomepageURL) {
-                    Label(localization.string(.settingsAboutProject), systemImage: "globe")
-                }
-                .buttonStyle(.bordered)
-                .controlSize(.small)
-
-                Link(destination: AppMetadata.repositoryURL) {
                     Label(localization.string(.settingsAboutRepository), systemImage: "link")
                 }
                 .buttonStyle(.bordered)
                 .controlSize(.small)
 
-                Link(destination: AppMetadata.authorURL) {
+                // Credit for the upstream project this fork is built on.
+                Link(destination: AppMetadata.upstreamRepositoryURL) {
                     Label(AppMetadata.authorName, systemImage: "person.crop.circle")
                 }
                 .buttonStyle(.bordered)
